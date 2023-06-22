@@ -42,7 +42,8 @@ module.exports = configure(function (ctx) {
       // 'roboto-font-latin-ext', // this or either 'roboto-font', NEVER both!
 
       'roboto-font', // optional, you are not bound to it
-      'material-icons' // optional, you are not bound to it
+      'material-icons', // optional, you are not bound to it
+      'mdi-v5'
     ],
 
     // Full list of options: https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-build
@@ -50,7 +51,7 @@ module.exports = configure(function (ctx) {
       vueRouterMode: 'history', // available values: 'hash', 'history'
       env: {
         SUPABASE_URL: 'https://fiopknivucqeguhjpqdo.supabase.co',
-        SUPABASE_KEY: '***'
+        SUPABASE_KEY: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoiYW5vbiIsImlhdCI6MTYzOTUyMTcwOSwiZXhwIjoxOTU1MDk3NzA5fQ.prM0rQ-qe7mHLFgm_508rCaC47lVJpx7YQqFnPUsHVs'
       },
       // transpile: false,
       // publicPath: '/',
@@ -114,13 +115,15 @@ module.exports = configure(function (ctx) {
       // Quasar plugins
       plugins: [
         'Dialog',
-        'Notify'
+        'Notify',
+        'Loading',
+        'LocalStorage'
       ]
     },
 
     // animations: 'all', // --- includes all animations
     // https://quasar.dev/options/animations
-    animations: [],
+    animations: 'all',
 
     // https://quasar.dev/quasar-cli/developing-ssr/configuring-ssr
     ssr: {
@@ -149,7 +152,7 @@ module.exports = configure(function (ctx) {
     // https://quasar.dev/quasar-cli/developing-pwa/configuring-pwa
     pwa: {
       workboxPluginMode: 'GenerateSW', // 'GenerateSW' or 'InjectManifest'
-      workboxOptions: {}, // only for GenerateSW
+      workboxOptions: { skipWaiting: true, clientsClaim: true }, // only for GenerateSW
 
       // for the custom service worker ONLY (/src-pwa/custom-service-worker.[js|ts])
       // if using workbox in InjectManifest mode
@@ -161,11 +164,12 @@ module.exports = configure(function (ctx) {
       manifest: {
         name: 'Quasar Estoque Supabase',
         short_name: 'Quasar Estoque Supabase',
-        description: 'A Quasar Framework app',
+        description: 'Estoque fácil na palma da sua mão',
         display: 'standalone',
         orientation: 'portrait',
         background_color: '#ffffff',
-        theme_color: '#027be3',
+        theme_color: '#2c9c6a',
+        categories: ['utilities', 'productivity', 'personalization'],
         icons: [
           {
             src: 'icons/icon-128x128.png',
@@ -191,6 +195,12 @@ module.exports = configure(function (ctx) {
             src: 'icons/icon-512x512.png',
             sizes: '512x512',
             type: 'image/png'
+          },
+          {
+            src: 'icons/maskable_icon_x512.png',
+            sizes: '512x512',
+            type: 'image/png',
+            purpose: 'maskable'
           }
         ]
       }

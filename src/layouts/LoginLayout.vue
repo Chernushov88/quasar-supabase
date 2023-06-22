@@ -3,7 +3,7 @@
     <q-header elevated>
       <q-toolbar>
         <q-toolbar-title>
-          Quasar Estoque
+          Quasar Estoque Supabase
         </q-toolbar-title>
       </q-toolbar>
     </q-header>
@@ -15,12 +15,17 @@
 </template>
 
 <script>
-import { defineComponent } from 'vue'
+import { defineComponent, onMounted } from 'vue'
+import useApi from 'src/composables/UseApi'
 
 export default defineComponent({
   name: 'LoginLayout',
 
   setup () {
+    const { getBrand } = useApi()
+    onMounted(() => {
+      getBrand()
+    })
     return {
     }
   }

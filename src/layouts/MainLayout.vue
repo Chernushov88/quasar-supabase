@@ -12,8 +12,10 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          Estoque
         </q-toolbar-title>
+
+        <dark-mode-toogle />
 
         <q-btn-dropdown flat color="white" icon="person">
           <q-list>
@@ -36,7 +38,7 @@
         <q-item-label
           header
         >
-          Essential Links
+          Menu
         </q-item-label>
 
         <EssentialLink
@@ -48,61 +50,53 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view />
+      <router-view v-slot="{ Component }">
+        <transition
+          appear
+          enter-active-class="animated fadeInUp"
+          leave-active-class="animated fadeOutDown"
+        >
+          <component :is="Component" />
+        </transition>
+      </router-view>
     </q-page-container>
   </q-layout>
 </template>
 
 <script>
 import EssentialLink from 'components/EssentialLink.vue'
+import DarkModeToogle from 'components/DarkModeToggle.vue'
 
 const linksList = [
   {
-    title: 'Docs',
-    caption: 'quasar.dev',
-    icon: 'school',
-    link: 'https://quasar.dev'
+    title: 'Home',
+    caption: '',
+    icon: 'mdi-home',
+    routeName: 'me'
   },
   {
-    title: 'Github',
-    caption: 'github.com/quasarframework',
-    icon: 'code',
-    link: 'https://github.com/quasarframework'
+    title: 'Category',
+    caption: '',
+    icon: 'mdi-shape-outline',
+    routeName: 'category'
   },
   {
-    title: 'Discord Chat Channel',
-    caption: 'chat.quasar.dev',
-    icon: 'chat',
-    link: 'https://chat.quasar.dev'
+    title: 'Product',
+    caption: '',
+    icon: 'mdi-archive',
+    routeName: 'product'
   },
   {
-    title: 'Forum',
-    caption: 'forum.quasar.dev',
-    icon: 'record_voice_over',
-    link: 'https://forum.quasar.dev'
-  },
-  {
-    title: 'Twitter',
-    caption: '@quasarframework',
-    icon: 'rss_feed',
-    link: 'https://twitter.quasar.dev'
-  },
-  {
-    title: 'Facebook',
-    caption: '@QuasarFramework',
-    icon: 'public',
-    link: 'https://facebook.quasar.dev'
-  },
-  {
-    title: 'Quasar Awesome',
-    caption: 'Community Quasar projects',
-    icon: 'favorite',
-    link: 'https://awesome.quasar.dev'
+    title: 'Config',
+    caption: '',
+    icon: 'mdi-cog',
+    routeName: 'form-config'
   }
 ]
 
-import { defineComponent, ref } from 'vue'
+import { defineComponent, ref, onMounted } from 'vue'
 import useAuthUser from 'src/composables/UseAuthUser'
+import useApi from 'src/composables/UseApi'
 import { useRouter } from 'vue-router'
 import { useQuasar } from 'quasar'
 
@@ -110,17 +104,21 @@ export default defineComponent({
   name: 'MainLayout',
 
   components: {
-    EssentialLink
+    EssentialLink,
+    DarkModeToogle
   },
 
   setup () {
     const leftDrawerOpen = ref(false)
 
     const $q = useQuasar()
-
     const router = useRouter()
-
     const { logout } = useAuthUser()
+    const { getBrand } = useApi()
+
+    onMounted(() => {
+      getBrand()
+    })
 
     const handleLogout = async () => {
       $q.dialog({
